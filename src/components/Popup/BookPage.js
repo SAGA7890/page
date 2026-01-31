@@ -1,75 +1,64 @@
-import React, { useRef, useEffect, useState } from "react";
+import React from "react";
 import ImageGallery from "./ImageGallery";
 import CentreDetails from "./CentreDetails";
 import BookContent from "./BookContent";
 
 function BookPage() {
-  const leftRef = useRef(null);
-  const [rightHeight, setRightHeight] = useState(null);
-
-  useEffect(() => {
-    if (leftRef.current) {
-      setRightHeight(leftRef.current.offsetHeight);
-    }
-  }, []);
-
   return (
-    <div className="min-h-screen bg-gray-100 flex justify-center items-start py-10 px-4">
+    // OVERLAY
+    <div className="fixed inset-0 bg-black/40 z-50 flex justify-center items-center px-4">
 
-      {/* PAGE CARD */}
-      <div className="relative bg-white w-full max-w-5xl rounded-2xl shadow-xl p-8">
+      {/* POPUP CARD — FIXED HEIGHT */}
+      <div className="relative bg-white w-full max-w-5xl h-[85vh] rounded-2xl shadow-xl overflow-hidden">
 
-        {/* ❌ CLOSE BUTTON — TOP RIGHT */}
+        {/* CLOSE BUTTON */}
         <button
           onClick={() => window.history.back()}
-          className="absolute top-4 right-4 text-2xl font-light text-gray-500 hover:text-black leading-none"
+          className="absolute top-4 right-4 z-10 text-2xl font-light text-gray-500 hover:text-black"
           aria-label="Close"
         >
           ×
         </button>
 
-        {/* GRID */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
+        {/* INNER PADDING WRAPPER */}
+        <div className="h-full p-8">
 
-          {/* LEFT SIDE — HEIGHT REFERENCE */}
-          <div ref={leftRef} className="space-y-6">
-            <div className="w-[360px]"></div>
-            <ImageGallery />
-            <CentreDetails />
-          </div>
+          {/* GRID — HEIGHT LOCKED */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 h-full">
 
-          {/* RIGHT SIDE */}
-          <div className="md:col-span-2 max-w-[824px] pl-8 pr-6 flex flex-col">
-
-            {/* STATIC PART */}
-            <div className="shrink-0">
-              <h1 className="font-noto font-medium text-[22px] leading-[36px] text-black max-w-[520px]">
-                THE CENTRAL TRUTH OF INTEGRAL EDUCATION
-              </h1>
-
-              <p className="mt-2 text-[16px] font-bold font-noto">
-              <span className="text-orange-600">Category:</span>{" "}
-              <span className="font-normal text-black">Book</span>
-              </p>
-
-
-              <h3 className="font-mont text-[15px] font-semibold mt-6 mb-2">
-                Description
-              </h3>
+            {/* LEFT — CAN SCROLL IF NEEDED */}
+            <div className="flex flex-col space-y-6 overflow-y-auto">
+              <ImageGallery />
+              <CentreDetails />
             </div>
 
-            {/* SCROLL ONLY DESCRIPTION */}
-            <div
-              className="overflow-y-auto"
-              style={{
-                maxHeight: rightHeight ? `${rightHeight - 140}px` : "auto",
-              }}
-            >
-              <div className="font-mont text-[14px] leading-6 text-gray-700 whitespace-pre-line text-justify">
-                <BookContent />
+            {/* RIGHT */}
+            <div className="md:col-span-2 flex flex-col h-full overflow-hidden">
+
+              {/* STATIC HEADER */}
+              <div className="shrink-0">
+                <h1 className="font-noto font-medium text-[22px] leading-[36px] text-black">
+                  THE CENTRAL TRUTH OF INTEGRAL EDUCATION
+                </h1>
+
+                <p className="mt-2 text-[16px] font-bold font-noto">
+                  <span className="text-orange-600">Category:</span>{" "}
+                  <span className="font-normal text-black">Book</span>
+                </p>
+
+                <h3 className="font-mont text-[15px] font-semibold mt-6 mb-3">
+                  Description
+                </h3>
               </div>
-            </div>
 
+              {/* ✅ DESCRIPTION — SCROLLS 100% */}
+              <div className="flex-1 overflow-y-auto pr-3">
+                <div className="font-mont text-[14px] leading-6 text-gray-700 whitespace-pre-line text-justify">
+                  <BookContent />
+                </div>
+              </div>
+
+            </div>
           </div>
         </div>
       </div>
